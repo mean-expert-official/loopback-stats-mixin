@@ -8,11 +8,11 @@ var moment = require('moment');
  *  Stats Mixin
  *  @Author Jonathan Casarrubias
  *  @Description
- * 
+ *
  *  The following mixin will add statistics functionallity to models which includes
  *  this module.
- * 
- *  It can create statistics from the given model, a model relationship or an nested object 
+ *
+ *  It can create statistics from the given model, a model relationship or an nested object
  **/
 module.exports = function(Model, ctx) {
     // Create dynamic statistic method
@@ -24,6 +24,7 @@ module.exports = function(Model, ctx) {
         ctx.now = moment();
         ctx.nowISOString = ctx.now.toISOString();
         ctx.stats = new Stats(ctx);
+
         // Data Workflow
         async.waterfall([
             // Create Scope Query
@@ -35,10 +36,11 @@ module.exports = function(Model, ctx) {
                     now: ctx.now,
                     nowISOString: ctx.nowISOString,
                     params: {
-                        id: ctx.params.id,
                         relation: ctx.params.relation
                     }
                 };
+
+                options.params[ctx.relation.fk] = ctx.params[ctx.relation.fk];
 
                 if (ctx.type === 'model') {
                     options.params.where = ctx.params.where;
@@ -55,6 +57,7 @@ module.exports = function(Model, ctx) {
                         break;
                     case 'relation':
                         Model.findOne(query, (err, instance) => {
+                            if(err) { return next(err); }
                             let builder = new QueryBuilder({
                                 type: ctx.type,
                                 count: ctx.count,
@@ -65,7 +68,8 @@ module.exports = function(Model, ctx) {
                                     where: ctx.params.where
                                 }
                             });
-                            builder.onComplete((err, query) => instance[ctx.relation || ctx.params.relation](query, next));
+
+                            builder.onComplete((err, query) => instance[ctx.params.relation.name](query, next));
                             builder.build()
                         });
                         break;
@@ -218,11 +222,11 @@ class QueryBuilder {
         // lets add a where statement
         query.where = this.ctx.params.where || {};
         // If stat type is relation, then we set the root id
-        if ((this.ctx.type === 'relation' || this.ctx.type === 'nested') && this.ctx.params.id)
-            query.where.id = this.ctx.params.id;
+        if ((this.ctx.type === 'relation' || this.ctx.type === 'nested') && this.ctx.params.relation && this.ctx.params[this.ctx.params.relation.fk])
+            query.where[this.ctx.params.relation.fk] = this.ctx.params[this.ctx.params.relation.fk];
         // If stat type is relation, then we set the root id
         if (this.ctx.type === 'relation' && this.ctx.params.relation)
-            query.include = this.ctx.params.relation;
+            query.include = this.ctx.params.relation.name;
         // Set Range
         if (this.ctx.params.range && this.ctx.count.on) {
             query.where[this.ctx.count.on] = {};
@@ -260,12 +264,26 @@ class ParamsBuilder {
     build() {
         if (this.ctx.type === "model")
             return { range: this.ctx.arguments[0], where: this.ctx.arguments[1], next: this.ctx.arguments[2] };
-        if (this.ctx.type === "relation" && this.ctx.relation)
-            return { id: this.ctx.arguments[0], range: this.ctx.arguments[1], where: this.ctx.arguments[2], next: this.ctx.arguments[3] };
-        if (this.ctx.type === "relation" && !this.ctx.relation)
-            return { id: this.ctx.arguments[0], relation: this.ctx.arguments[1], range: this.ctx.arguments[2], where: this.ctx.arguments[3], next: this.ctx.arguments[4] };
-        if (this.ctx.type === "nested")
-            return { id: this.ctx.arguments[0], nested: this.ctx.arguments[1], range: this.ctx.arguments[2], where: this.ctx.arguments[3], next: this.ctx.arguments[4] };
+        if (this.ctx.type === "relation" && this.ctx.relation) {
+
+            let params = { relation: this.ctx.relation, range: this.ctx.arguments[1], where: this.ctx.arguments[2], next: this.ctx.arguments[3] };
+            params[this.ctx.relation.fk] = this.ctx.arguments[0];
+
+            return params;
+        }
+        if (this.ctx.type === "relation" && !this.ctx.relation) {
+
+            let params = { relation: this.ctx.arguments[1], range: this.ctx.arguments[2], where: this.ctx.arguments[3], next: this.ctx.arguments[4] };
+            params[this.ctx.relation.fk] = this.ctx.arguments[0];
+
+            return params;
+        }
+        if (this.ctx.type === "nested"){
+            let params = { nested: this.ctx.arguments[1], range: this.ctx.arguments[2], where: this.ctx.arguments[3], next: this.ctx.arguments[4] };
+            params[this.ctx.relation.fk] = this.ctx.arguments[0];
+
+            return params;
+        }
     }
 }
 /**
@@ -284,7 +302,7 @@ class AcceptBuilder {
         if (this.ctx.type === "relation" || this.ctx.type === "nested")
             accepts.push({ arg: 'id', type: 'string', required: true, description: 'Model id' });
         if (this.ctx.type === "relation" && !this.ctx.relation)
-            accepts.push({ arg: 'relation', type: 'string', required: true, description: 'Relationship name' });
+            accepts.push({ arg: 'relation', type: 'object', required: true, description: 'Relationship name' });
         if (this.ctx.type === "nested")
             accepts.push({ arg: 'nested', type: 'string', required: true, description: 'Nested array property name' });
         accepts.push({ arg: 'range', type: 'string', required: true, description: 'Scale range (daily, weekly, monthly, annual)' });
