@@ -1,0 +1,26 @@
+{
+  "name": "loopback-stats-mixin",
+  "version": "1.0.0",
+  "author": "Jonathan Casarrubias <http://github.com/jonathan-casarrubias>",
+  "description": "A mixin to provide statistical functionallity for Loopback Models, Relations and Nested Datasets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "echo \"Error: mixin should be loaded from model-config.json\" && exit 1"
+  },
+  "keywords": [
+    "loopback",
+    "strongloop",
+    "mixin",
+    "stats"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonathan-casarrubias/loopback-stats-mixin.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.0.0-rc.2",
+    "moment": "^2.12.0"
+  }
+}
