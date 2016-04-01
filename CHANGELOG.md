@@ -5,6 +5,10 @@ Loopback Stats Mixin - CHANGELOG
 
 The **loopback-stats-mixin** module change .
 
+- **Version 1.0.3**.- 
+    - Refactor builders into different files.
+    - Improved properties description for swagger by more specific details.
+    - Added Stats Wrapper example in README.md
 - **Version 1.0.2**.- 
     - Added validation to verify micro-services to be wrapped actually exists.
     - Added custom primary key support.
