@@ -16,11 +16,11 @@ var StatsBuilder = require('./builders/stats-builder');
  *  @See <https://www.npmjs.com/package/loopback-stats-mixin>
  *  @See <https://github.com/jonathan-casarrubias/loopback-stats-mixin>
  *  @Description
- * 
+ *
  *  The following mixin will add statistics functionallity to models which includes
  *  this module.
- * 
- *  It can create statistics from the given model, a model relationship or an nested object 
+ *
+ *  It can create statistics from the given model, a model relationship or an nested object
  **/
 module.exports = function(Model, ctx) {
     ctx.Model = Model;
