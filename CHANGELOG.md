@@ -5,6 +5,9 @@ Loopback Stats Mixin - CHANGELOG
 
 The **loopback-stats-mixin** module change .
 
+- **Version 1.0.4**.- 
+    - Refactor PrimaryKey Builder <https://github.com/victorhqc>.
+    - Implemented Custom Range
 - **Version 1.0.3**.- 
     - Refactor builders into different files.
     - Improved properties description for swagger by more specific details.

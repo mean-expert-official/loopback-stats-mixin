@@ -3,6 +3,7 @@
  * Stats Builder Dependencies
  */
 var moment = require('moment');
+var TypeBuilder = require('./type-builder');
 /**
  * Builds Statistic Array from List of Resuls
  */
@@ -14,12 +15,12 @@ module.exports = class StatsBuilder {
         this.list = list;
         let dataset = [];
         let iterator = this.getIteratorCount();
-        for (let i = 1, dateIndex = iterator; i <= iterator; i++ , dateIndex--) {
+        for (let i = 0, dateIndex = iterator; i <= iterator; i++ , dateIndex--) {
             let current = this.getCurrentMoment(dateIndex);
             let count = this.getCurrentCount(current);
             dataset.push({
                 date: current.toISOString(),
-                count: this.ctx.count.avg ? (count / list.length) : count
+                count: count === 0 ? 0 : this.ctx.count.avg ? (count / list.length) : count
             });
         }
         return dataset;
@@ -76,17 +77,17 @@ module.exports = class StatsBuilder {
         let current;
         switch (this.ctx.params.range) {
             case 'weekly':
-                current = moment(this.ctx.nowISOString).subtract(index - 1, 'days');
+                current = moment(this.ctx.nowISOString).subtract(index, 'days');
                 break;
             case 'monthly':
-                current = moment(this.ctx.nowISOString).subtract(index - 1, 'days');
+                current = moment(this.ctx.nowISOString).subtract(index, 'days');
                 break;
             case 'annual':
-                current = moment(this.ctx.nowISOString).subtract(index - 1, 'months');
+                current = moment(this.ctx.nowISOString).subtract(index, 'months');
                 break;
             case 'daily':
             default:
-                current = moment(this.ctx.nowISOString).subtract(index - 1, 'hours');
+                current = moment(this.ctx.nowISOString).subtract(index, 'hours');
                 break;
         }
         return current;
@@ -94,8 +95,10 @@ module.exports = class StatsBuilder {
 
     getIteratorCount() {
         let iterator;
-
         switch (this.ctx.params.range) {
+            case 'daily':
+                iterator = 24;
+                break;
             case 'weekly':
                 iterator = 7;
                 break;
@@ -105,12 +108,20 @@ module.exports = class StatsBuilder {
             case 'annual':
                 iterator = 12;
                 break;
-            case 'daily':
-            default:
-                iterator = 24;
-                break;
+            case 'custom':
+                let start = moment(this.ctx.params.custom.start);
+                let end = moment(this.ctx.params.custom.end);
+                iterator = 0;
+                ['hour', 'day', 'week', 'month','year'].forEach(item => {
+                    let plural = [item, 's'].join('');
+                    let diff   = end.diff(start, plural);
+                    if (diff > 1 && diff < 25) {
+                        iterator = item === 'week' ? end.diff(start, 'days') : diff;
+                        this.ctx.params.range = new TypeBuilder(this.ctx).build();
+                    }
+                });
+            break;
         }
-
         return iterator;
     }
 }

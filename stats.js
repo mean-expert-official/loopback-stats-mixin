@@ -9,6 +9,7 @@ var ParamsBuilder = require('./builders/params-builder');
 var QueryBuilder = require('./builders/query-builder');
 var PrimaryKeyBuilder = require('./builders/pk-builder');
 var StatsBuilder = require('./builders/stats-builder');
+var NowBuilder = require('./builders/now-builder');
 /**
  *  Stats Mixin
  *  @Author Jonathan Casarrubias
@@ -30,7 +31,7 @@ module.exports = function(Model, ctx) {
         ctx.arguments = arguments;
         ctx.params = new ParamsBuilder(ctx).build();
         // Create instance of stats class
-        ctx.now = moment();
+        ctx.now = new NowBuilder(ctx).build();
         ctx.nowISOString = ctx.now.toISOString();
         ctx.stats = new StatsBuilder(ctx);
         // Data Workflow
@@ -46,7 +47,8 @@ module.exports = function(Model, ctx) {
                     params: {
                         pk: new PrimaryKeyBuilder(Model).build(),
                         id: ctx.params.id,
-                        relation: ctx.params.relation
+                        relation: ctx.params.relation,
+                        custom: ctx.params.custom
                     }
                 };
                 if (ctx.type === 'model') {
@@ -72,7 +74,8 @@ module.exports = function(Model, ctx) {
                                 nowISOString: ctx.nowISOString,
                                 params: {
                                     range: ctx.params.range,
-                                    where: ctx.params.where
+                                    where: ctx.params.where,
+                                    custom: ctx.params.custom
                                 }
                             });
                             builder.onComplete((err, query) => {

@@ -3,6 +3,7 @@
  * Query Builder Dependencies
  */
 var moment = require('moment');
+var TypeBuilder = require('./type-builder');
 /**
  * Builds Loopback Query
  */
@@ -30,7 +31,8 @@ module.exports = class QueryBuilder {
         // Set Range
         if (this.ctx.params.range && this.ctx.count.on) {
             query.where[this.ctx.count.on] = {};
-            switch (this.ctx.params.range) {
+            let range = new TypeBuilder(this.ctx).build();
+            switch (range) {
                 case 'weekly':
                     query.where[this.ctx.count.on].gt = moment(this.ctx.nowISOString).subtract(7, 'days').toDate();
                     break;

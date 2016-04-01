@@ -18,7 +18,8 @@ module.exports = class AcceptBuilder {
             accepts.push({ arg: 'relation', type: 'string', required: true, description: 'Relationship name' });
         if (this.ctx.type === "nested")
             accepts.push({ arg: 'nested', type: 'string', required: true, description: 'Nested array property name' });
-        accepts.push({ arg: 'range', type: 'string', required: true, description: 'Scale range (daily, weekly, monthly, annual)' });
+        accepts.push({ arg: 'range', type: 'string', required: true, description: 'daily, weekly, monthly, annual, custom' });
+        accepts.push({ arg: 'custom', type: 'object', required: false, description: '{"start": date, "end": date }' });
         accepts.push({ arg: 'where', type: 'object', description: 'Statement to filter ' + (this.ctx.relation || this.ctx.nested) });
         return accepts;
     }
