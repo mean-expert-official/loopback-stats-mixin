@@ -35,11 +35,11 @@ module.exports = function(Model, ctx) {
                     now: ctx.now,
                     nowISOString: ctx.nowISOString,
                     params: {
+                        pk: new PrimaryKeyBuilder(Model).build(),
                         id: ctx.params.id,
                         relation: ctx.params.relation
                     }
                 };
-
                 if (ctx.type === 'model') {
                     options.params.where = ctx.params.where;
                     options.params.range = ctx.params.range;
@@ -219,7 +219,8 @@ class QueryBuilder {
         query.where = this.ctx.params.where || {};
         // If stat type is relation, then we set the root id
         if ((this.ctx.type === 'relation' || this.ctx.type === 'nested') && this.ctx.params.id)
-            query.where.id = this.ctx.params.id;
+            query.where[this.ctx.params.pk] = this.ctx.params.id;
+        // query.where[this.ctx.Model.settings.relations[this.ctx.params.relation].] = this.ctx.params.id;
         // If stat type is relation, then we set the root id
         if (this.ctx.type === 'relation' && this.ctx.params.relation)
             query.include = this.ctx.params.relation;
@@ -290,5 +291,18 @@ class AcceptBuilder {
         accepts.push({ arg: 'range', type: 'string', required: true, description: 'Scale range (daily, weekly, monthly, annual)' });
         accepts.push({ arg: 'where', type: 'object', description: 'Statement to filter list of items to be processed' });
         return accepts;
+    }
+}
+/**
+ * Builds the primary key name depending on model configurations
+ */
+class PrimaryKeyBuilder {
+    constructor(Model) { this.Model = Model; }
+    build() {
+        let pk = 'id';
+        if (!this.Model.settings.idInjection)
+        for (let key in this.Model.rawProperties)
+        if (this.Model.rawProperties[key].id) pk = key;
+        return pk;
     }
 }

@@ -22,7 +22,11 @@ module.exports = function(Model, ctx) {
                 ctx.result[item] = dataset;
                 next();
             };
-            Model[item].apply(Model, Array.from(ctx.args));
+            if (Model[item]) {
+                Model[item].apply(Model, Array.from(ctx.args));
+            } else {
+                next(new Error(Model.definition.name + '.' + item + ' does not exist, verify your configuration.'));
+            }
         }, err => ctx.next(err, ctx.result));
     };
     /**
