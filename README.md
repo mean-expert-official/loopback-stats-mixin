@@ -87,6 +87,7 @@ The following options are needed in order to create a micro-service to provide s
 | description   | String      | No  | Any             | Loopback Explorer Description
 | type          | String      | Yes  | [model \| relation \| nested] |  model, relation, nested
 | relation      | String      | No | Model relation name | accounts iff Organization.accounts
+| nested      | String      | No | Model nested property | locations iff Organization.locations
 | count         | Object      | Yes | [on \| by \| as \| avg] | SEE COUNT OPTIONS
 
 Different configurations can be specified depending on the needs, since you can create statistical information over Models, Relations and Nested Datasets, different configurations will be needed.
@@ -106,6 +107,55 @@ There are different ways to create statistical information and depending on the 
 | by      | String      | Yes  | [index \| number property \| boolean property]     |  index, amount, isClosed
 | as   | Number      | No  | Any numeric value (default: 1)             | 1, 5, 10
 | avg         | Boolean      | No  | [true \| false] |  true, false
+
+STATS WRAPPER MIXIN
+========
+
+This mixin creates a [Remote Method](https://docs.strongloop.com/display/APIC/Remote+methods) that wraps multiple micro-service into 1 service bundle. It provides a way to group micro-services but also bundled services by creating a statistics tree allowing to fetch a full set of data for multiple stats in just one call.
+
+#### EXAMPLE
+
+The following is an example of how to create a `stats` bundled-service:
+
+```json
+"mixins": {
+    "StatsWrapper": [
+        {
+            "type": "model",
+            "method": "bundledStats",
+            "endpoint": "/bundled-stats",
+            "description": "Loopback Explorer Description",
+            "wraps": [
+                "microServiceStats1",
+                "microServiceStats2",
+                "microServiceStats3",
+                "microServiceStats4"
+            ]
+        }
+    ]
+}
+```
+
+The code defined above would create a `localhost:3000/api/model/bundled-stats` endpoint that will result in an object containing the result from all of the micro-services wrapped.
+
+`HIN: Wrapping can be done in multiple levels, so you can wrap a set of micro-services, but also a set of bundled-services by creating a tree of services.`
+
+BOOT OPTIONS
+=============
+
+The following options are needed in order to create a bundled-service to provide statistical information regarding multiple micro-services.
+
+`HINT: you can create as many bundled-services as you need.`
+
+| Options       | Type       | Requried          | Possible Values | Examples
+|:-------------:|:-------------:|:-------------:|:---------------:| :------------------------:
+| method        | String      | Yes  | Any             |  stat, myStat, modelStat, etc
+| endpoint      | String      | Yes  | URL Form        |  /stats, /:id/stats
+| description   | String      | No  | Any             | Loopback Explorer Description
+| type          | String      | Yes  | [model \| relation \| nested] |  model, relation, nested
+| relation      | String      | No | Model relation name | accounts iff Organization.accounts
+| nested      | String      | No | Model nested property | locations iff Organization.locations
+| wraps         | [String]    | Yes | Micro services name list | ['microService1', 'microService2', '..']
 
 
 LICENSE

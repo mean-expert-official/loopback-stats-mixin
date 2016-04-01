@@ -1,8 +1,15 @@
 'use strict';
+/**
+ * Stats Wrapper Mixin Dependencies
+ */
 var async = require('async');
+var AcceptBuilder = require('./builders/accept-builder');
 /**
  *  Wrapper JS Mixin
  *  @Author Jonathan Casarrubias
+ *  @See <https://twitter.com/johncasarrubias>
+ *  @See <https://www.npmjs.com/package/loopback-stats-mixin>
+ *  @See <https://github.com/jonathan-casarrubias/loopback-stats-mixin>
  *  @Description
  * 
  *  The following mixin will add statistics functionallity to models which includes
@@ -11,6 +18,7 @@ var async = require('async');
  *  It can create statistics from the given model, a model relationship or an nested object 
  **/
 module.exports = function(Model, ctx) {
+    ctx.Model = Model;
     // Create dynamic statistic method
     Model[ctx.method] = function() {
         ctx.result = {};
@@ -22,7 +30,11 @@ module.exports = function(Model, ctx) {
                 ctx.result[item] = dataset;
                 next();
             };
-            Model[item].apply(Model, Array.from(ctx.args));
+            if (Model[item]) {
+                Model[item].apply(Model, Array.from(ctx.args));
+            } else {
+                next(new Error(Model.definition.name + '.' + item + ' does not exist, verify your configuration.'));
+            }
         }, err => ctx.next(err, ctx.result));
     };
     /**
@@ -35,27 +47,3 @@ module.exports = function(Model, ctx) {
         description: ctx.description
     });
 };
-/**
- * Builds Parameters object for dynamic remote method
- */
-class AcceptBuilder {
-    /**
-     * Setters
-     */
-    constructor(ctx) { this.ctx = ctx; }
-    /**
-     * Parse params according ctx type
-     */
-    build() {
-        let accepts = [];
-        if (this.ctx.type === "relation" || this.ctx.type === "nested")
-            accepts.push({ arg: 'id', type: 'string', required: true, description: 'Model id' });
-        if (this.ctx.type === "relation" && !this.ctx.relation)
-            accepts.push({ arg: 'relation', type: 'string', required: true, description: 'Relationship name' });
-        if (this.ctx.type === "nested")
-            accepts.push({ arg: 'nested', type: 'string', required: true, description: 'Nested array property name' });
-        accepts.push({ arg: 'range', type: 'string', required: true, description: 'Scale range (daily, weekly, monthly, annual)' });
-        accepts.push({ arg: 'where', type: 'object', description: 'Statement to filter list of items to be processed' });
-        return accepts;
-    }
-}
