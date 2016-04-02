@@ -5,6 +5,17 @@ Loopback Stats Mixin - CHANGELOG
 
 The **loopback-stats-mixin** module change .
 
+- **Version 1.1.0**.- 
+    - Implemented Babel.
+    - Fully implemented ES6.
+    - Refactor project structure.
+    - Removed unnecessary PK Builder.
+    - Updated documentation.
+    - Implemented & passed ESLINT tests.
+    - Implemented unit tests.
+    - Corrected ranges from hourly to yearly according right definition
+    - Removed node_modules from repo and added .gitignore
+    - Added development tools, gulp, mocha, etc. (see package.json)
 - **Version 1.0.4**.- 
     - Refactor PrimaryKey Builder <https://github.com/victorhqc>.
     - Implemented Custom Range

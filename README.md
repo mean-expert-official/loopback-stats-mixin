@@ -33,7 +33,7 @@ Add the `mixins` property to your `server/model-config.json` like the following:
     ],
     "mixins": [
       "loopback/common/mixins",
-      "../node_modules/loopback-stats-mixin",
+      "../node_modules/loopback-stats-mixin/dist",
       "../common/mixins"
     ]
   }
@@ -65,7 +65,7 @@ The following is the most basic example of how to create a `stats` micro-service
 }
 ```
 
-The code defined above would create a `localhost:3000/api/model/stats` endpoint with the ability to fetch `daily, weekly, monthly and annual` statistics with information related to the model.
+The code defined above would create a `localhost:3000/api/model/stats` endpoint with the ability to fetch `hourly, daily, weekly, monthly, yearly and custom start and end` statistics with information related to the model.
 
 In this example, the information will be processed upon the `createdAt` date property counted by `index` which means everytime the createdAt property matches within a timeframe, it will be counted as 1.
 
