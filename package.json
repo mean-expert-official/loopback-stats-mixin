@@ -1,6 +1,6 @@
 {
   "name": "loopback-stats-mixin",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Jonathan Casarrubias <http://github.com/jonathan-casarrubias>",
   "description": "A mixin to provide statistical functionallity for Loopback Models, Relations and Nested Datasets",
   "main": "src/index.js",
@@ -24,12 +24,12 @@
   },
   "license": "MIT",
   "dependencies": {
+    "babel-runtime": "^6.3.13",
     "async": "^2.0.0-rc.2",
     "moment": "^2.12.0",
     "util": "^0.10.3"
   },
   "devDependencies": {
-    "babel-runtime": "^6.3.13",
     "babel-core": "^6.1.21",
     "babel-istanbul": "^0.5.8",
     "babel-plugin-add-module-exports": "^0.1.1",
