@@ -160,4 +160,4 @@ The following options are needed in order to create a bundled-service to provide
 
 LICENSE
 =============
-[MTI](LICENSE)
+[MTI](LICENSE.md)

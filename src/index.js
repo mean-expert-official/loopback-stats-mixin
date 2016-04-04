@@ -7,5 +7,5 @@ export default deprecate(
     app.loopback.modelBuilder.mixins.define('Stats', Stats);
     app.loopback.modelBuilder.mixins.define('StatsWrapper', StatsWrapper);
   },
-  'DEPRECATED: Use mixinSources, see https://github.com/clarkbw/loopback-stats-mixin#mixinsources'
+  'DEPRECATED: Use mixinSources, see https://github.com/jonathan-casarrubias/loopback-stats-mixin#mixinsources'
 );

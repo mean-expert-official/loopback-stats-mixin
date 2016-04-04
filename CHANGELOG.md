@@ -5,6 +5,8 @@ Loopback Stats Mixin - CHANGELOG
 
 The **loopback-stats-mixin** module change .
 
+- **Version 1.1.2**.- 
+    - Updated loopback explorer documentation
 - **Version 1.1.1**.- 
     - Hotfix missing babel-runtime in package.json
 - **Version 1.1.0**.- 
