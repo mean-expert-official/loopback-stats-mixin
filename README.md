@@ -1,4 +1,4 @@
-[![NPM](https://nodei.co/npm/loopback-stats-mixin.png?compact=true)](https://nodei.co/npm/loopback-stats-mixin/)
+[![NPM](https://nodei.co/npm/loopback-stats-mixin.png?stars&downloads)](https://nodei.co/npm/loopback-stats-mixin/) [![NPM](https://nodei.co/npm-dl/loopback-stats-mixin.png)](https://nodei.co/npm/loopback-stats-mixin/)
 
 Loopback Stats Mixin
 =============

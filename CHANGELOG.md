@@ -5,6 +5,8 @@ Loopback Stats Mixin - CHANGELOG
 
 The **loopback-stats-mixin** module change .
 
+- **Version 1.1.3**.- 
+    - Fixed issue on yearly range
 - **Version 1.1.2**.- 
     - Updated loopback explorer documentation
 - **Version 1.1.1**.- 

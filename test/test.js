@@ -63,7 +63,7 @@ const Order = DataSource.createModel('Order',
  * TODO, HARDCODE DATES ON CREATION; OTHERWISE IS TOO DYNAMIC MAKING DIFFICULT TO TEST
  * Tests that previously passed now fails, it depends on day of week and month
  */
-const now = moment();
+const now = moment('2016-04-11T16:41:31.593Z');
 Order.create([
   { name: 'order 1', type: 'national', created: now.toISOString() },
   { name: 'order 2', type: 'national', created: moment(now.toISOString()).subtract(5, 'day').toISOString() },
@@ -79,8 +79,8 @@ describe('Loopback Stats Mixin (Model Mode)', () => {
   // It verifies the stast structure in the past 12 months and current
   it('verifies for monthly stats structure length and results', () => Order.stats('monthly').then(stats => {
     assert.equal(stats.length, 13);
-    assert.equal(stats.pop().count, 2);
-    assert.equal(stats.pop().count, 1);
+    assert.equal(stats.pop().count, 3);
+    assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 1);
     assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 0);
