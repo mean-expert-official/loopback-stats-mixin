@@ -19,6 +19,7 @@ export default class StatsBuilder {
             let count = this.getCurrentCount(current);
             dataset.push({
                 date: current.toISOString(),
+                universal: current.format('x'),
                 count: count === 0 ? 0 : this.ctx.count.avg ? (count / list.length) : count
             });
         }

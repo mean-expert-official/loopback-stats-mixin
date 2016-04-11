@@ -1,6 +1,6 @@
 {
   "name": "loopback-stats-mixin",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "author": "Jonathan Casarrubias <http://github.com/jonathan-casarrubias>",
   "description": "A mixin to provide statistical functionallity for Loopback Models, Relations and Nested Datasets",
   "main": "src/index.js",

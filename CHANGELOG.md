@@ -5,6 +5,8 @@ Loopback Stats Mixin - CHANGELOG
 
 The **loopback-stats-mixin** module change .
 
+- **Version 1.1.5**.- 
+    - Implemented universal time in response
 - **Version 1.1.4**.- 
     - Fixed issue on yearly range
 - **Version 1.1.3**.- 
