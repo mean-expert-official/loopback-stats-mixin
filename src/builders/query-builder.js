@@ -45,7 +45,7 @@ export default class QueryBuilder {
                 case 'monthly':
                     query.where[this.ctx.count.on].gt = moment(this.ctx.nowISOString).subtract(12, 'months').toDate();
                     break;
-                case 'annual':
+                case 'yearly':
                     query.where[this.ctx.count.on].gt = moment(this.ctx.nowISOString).subtract(5, 'years').toDate();
                     break;
             }

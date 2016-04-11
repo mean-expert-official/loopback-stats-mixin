@@ -12,10 +12,11 @@ export default class NowBuilder {
     build() {
         let now;
         switch (this.ctx.params.range) {
+            case 'hourly':
             case 'daily':
             case 'weekly':
             case 'monthly':
-            case 'annual':
+            case 'yearly':
             default:
                 now = moment();
             break;
