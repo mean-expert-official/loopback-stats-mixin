@@ -9,26 +9,37 @@ import TypeBuilder from './type-builder';
 export default class StatsBuilder {
 
     constructor(ctx) { this.ctx = ctx; }
-
+    
     process(list) {
-        this.list = list;
+      this.list = list;
+      if (this.ctx.params.groupBy && this.ctx.params.groupBy.length > 0) {
+        let result = {};
+        this.list.forEach(item => (result[item[this.ctx.params.groupBy]] = this.calculate(item[this.ctx.params.groupBy])));
+        return result;
+      } else {
+        return this.calculate();
+      }
+    }
+
+    calculate(group) {
         let dataset = [];
         let iterator = this.getIteratorCount();
         for (let i = 0, dateIndex = iterator; i <= iterator; i++ , dateIndex--) {
             let current = this.getCurrentMoment(dateIndex);
-            let count = this.getCurrentCount(current);
+            let count = this.getCurrentCount(current, group);
             dataset.push({
                 date: current.toISOString(),
-                universal: current.format('x'),
-                count: count === 0 ? 0 : this.ctx.count.avg ? (count / list.length) : count
+                universal: parseInt(current.format('x')),
+                count: count === 0 ? 0 : this.ctx.count.avg ? (count / this.list.length) : count
             });
         }
         return dataset;
     }
 
-    getCurrentCount(current) {
+    getCurrentCount(current, group) {
         let count = 0;
         this.list.forEach(item => {
+            if (group && item[this.ctx.params.groupBy] !== group) return;
             let itemDate = moment(item[this.ctx.count.on]);
             let itemFactor = this.getFactor(item);
             switch (this.ctx.params.range) {

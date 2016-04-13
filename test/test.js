@@ -77,7 +77,7 @@ describe('Loopback Stats Mixin (Model Mode)', () => {
   // It verifies the orders are created
   it('verifies if orders where created successfully', () => Order.find().then(orders => assert.lengthOf(orders, 4)));
   // It verifies the stast structure in the past 12 months and current
-  it('verifies for monthly stats structure length and results', () => Order.stats('monthly').then(stats => {
+  it('1 verifies for monthly stats structure length and results', () => Order.stats('monthly').then(stats => {
     assert.equal(stats.length, 13);
     assert.equal(stats.pop().count, 3);
     assert.equal(stats.pop().count, 0);
@@ -95,7 +95,7 @@ describe('Loopback Stats Mixin (Model Mode)', () => {
     assert.equal(stats.pop(), undefined);
   }));
   // It verifies the stast structure in the past 4 weeks and current
-  it('verifies for weekly stats structure length and results', () => Order.stats('weekly').then(stats => {
+  it('2 verifies for weekly stats structure length and results', () => Order.stats('weekly').then(stats => {
     assert.equal(stats.length, 5);
     assert.equal(stats.pop().count, 1);
     assert.equal(stats.pop().count, 2);
@@ -106,12 +106,12 @@ describe('Loopback Stats Mixin (Model Mode)', () => {
   }))
 
   // It verifies the stast structure in the past 7 days and current
-  it('verifies for daily stats structure length and results', () => Order.stats('daily').then(stats => {
+  it('3 verifies for daily stats structure length and results', () => Order.stats('daily').then(stats => {
     assert.equal(stats.length, 8);
-    assert.equal(stats.pop().count, 1);
     assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 1);
+    assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 1);
     assert.equal(stats.pop().count, 0);
@@ -119,7 +119,7 @@ describe('Loopback Stats Mixin (Model Mode)', () => {
     assert.equal(stats.length, 0);
   }));
   // It verifies the stast structure in custom range
-  it('verifies for custom stats structure length and results', () => Order.stats('custom', {
+  it('4 verifies for custom stats structure length and results', () => Order.stats('custom', {
     start: moment(now.toISOString()).subtract(2, 'days').toISOString(),
     end: now.toISOString()
   }).then(stats => {
@@ -130,7 +130,7 @@ describe('Loopback Stats Mixin (Model Mode)', () => {
     assert.equal(stats.length, 0);
   }));
   // It verifies the where statement works correctly
-  it('verifies for custom stats with where statement 1', () => Order.stats('custom', {
+  it('5 verifies for custom stats with where statement 1', () => Order.stats('custom', {
     start: moment(now.toISOString()).subtract(2, 'days').toISOString(),
     end: now.toISOString()
   }, { type : 'international' }).then(stats => {
@@ -142,23 +142,30 @@ describe('Loopback Stats Mixin (Model Mode)', () => {
   }));
 
   // It verifies the where statement works correctly
-  it('verifies for daily stats with where statement', () => Order.stats('daily', null, { type : 'national' }).then(stats => {
+  it('6 verifies for daily stats with where statement 2', () => Order.stats('daily', null, { type : 'national' }).then(stats => {
     assert.equal(stats.length, 8);
-    assert.equal(stats.pop().count, 1);
-    assert.equal(stats.pop().count, 0);
-    assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 1);
+    assert.equal(stats.pop().count, 0);
+    assert.equal(stats.pop().count, 0);
+    assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 0);
     assert.equal(stats.length, 0);
+  }));
+
+  // It verifies the groupBy
+  it('7 verifies for group by filter', () => Order.stats('daily', null, null, 'type').then(stats => {
+    assert.equal(stats.hasOwnProperty('national'), true);
+    assert.equal(stats.hasOwnProperty('international'), true);
+
   }));
 });
 
 describe('Loopback Stats Wrapper Mixin (Model Mode)', () => {
   // It verifies the orders are created
-  it('verifies if wrapper get wrapped stats', () => Order.wrapper('daily', null, null, null).then(stats => {
+  it('7 verifies if wrapper get wrapped stats', () => Order.wrapper('daily', null, null, null, null).then(stats => {
     assert.equal(stats.stats.length, 8);
     assert.equal(stats.stats2.length, 8);
   }));

@@ -5,6 +5,9 @@ Loopback Stats Mixin - CHANGELOG
 
 The **loopback-stats-mixin** module change .
 
+- **Version 1.1.6**.- 
+    - Parse universal time as integer
+    - Implemented groupBy functionallity
 - **Version 1.1.5**.- 
     - Implemented universal time in response
 - **Version 1.1.4**.- 
