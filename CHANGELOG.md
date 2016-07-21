@@ -5,6 +5,10 @@ Loopback Stats Mixin - CHANGELOG
 
 The **loopback-stats-mixin** module change .
 
+- **Version 1.1.9**.- 
+    - Fixed headers already set issue in wrapper
+- **Version 1.1.8**.- 
+    - Fixed headers already set issue in stats
 - **Version 1.1.7**.- 
     - Parse universal time as integer
     - Implemented groupBy functionallity

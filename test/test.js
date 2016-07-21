@@ -63,12 +63,18 @@ const Order = DataSource.createModel('Order',
  * TODO, HARDCODE DATES ON CREATION; OTHERWISE IS TOO DYNAMIC MAKING DIFFICULT TO TEST
  * Tests that previously passed now fails, it depends on day of week and month
  */
-const now = moment('2016-04-11T16:41:31.593Z');
+const nowISO = '2016-04-11T16:41:31.593Z';
+const yesterday = moment(nowISO).subtract(1, 'day');
+const lastWeek = moment(nowISO).subtract(1, 'week');
+const twoWeeksAgo = moment(nowISO).subtract(2, 'week');
+const oneMonth = moment(nowISO).subtract(1, 'month');
+const twoMonth = moment(nowISO).subtract(2, 'month');
+const treeMonth = moment(nowISO).subtract(3, 'month');
 Order.create([
-  { name: 'order 1', type: 'national', created: now.toISOString() },
-  { name: 'order 2', type: 'national', created: moment(now.toISOString()).subtract(5, 'day').toISOString() },
-  { name: 'order 3', type: 'international', created: moment(now.toISOString()).subtract(3, 'day').toISOString() },
-  { name: 'order 4', type: 'international', created: moment(now.toISOString()).subtract(2, 'month').toISOString() },
+  { name: 'order 1', type: 'national', created: nowISO },
+  { name: 'order 2', type: 'national', created: yesterday.toISOString() },
+  { name: 'order 3', type: 'international', created: lastWeek.toISOString() },
+  { name: 'order 4', type: 'international', created: twoWeeksAgo.toISOString() },
 ]);
 /**
  * Start Tests
@@ -107,6 +113,7 @@ describe('Loopback Stats Mixin (Model Mode)', () => {
 
   // It verifies the stast structure in the past 7 days and current
   it('3 verifies for daily stats structure length and results', () => Order.stats('daily').then(stats => {
+    console.log(stats);
     assert.equal(stats.length, 8);
     assert.equal(stats.pop().count, 0);
     assert.equal(stats.pop().count, 0);

@@ -92,11 +92,14 @@ export default (Model, ctx) => {
         (list, next) => next(null, ctx.stats.process(list)),
         // End of Flow
       ], (err, result) => {
-        if (typeof ctx.params.next === 'function') ctx.params.next(err, result);
-        if (err) {
-          reject(err);
+        if (typeof ctx.params.next === 'function') {
+          ctx.params.next(err, result);
         } else {
-          resolve(result);
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
         }
       });
     });

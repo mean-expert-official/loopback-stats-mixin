@@ -37,11 +37,14 @@ export default (Model, ctx) => {
           next(new Error(Model.definition.name + '.' + item + ' does not exist, verify your configuration.'));
         }
       }, err => {
-        if (typeof ctx.next === 'function') ctx.next(err, ctx.result);
-        if (err) {
-          reject(err);
+        if (typeof ctx.next === 'function') {
+          ctx.next(err, ctx.result);
         } else {
-          resolve(ctx.result);
+          if (err) {
+            reject(err);
+          } else {
+            resolve(ctx.result);
+          }
         }
       });
     });
