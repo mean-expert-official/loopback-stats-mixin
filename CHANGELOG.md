@@ -1,10 +1,11 @@
-[![NPM](https://nodei.co/npm/loopback-stats-mixin.png?compact=true)](https://nodei.co/npm/loopback-stats-mixin/)
 
 Loopback Stats Mixin - CHANGELOG
 =============
 
 The **loopback-stats-mixin** module change .
 
+- **Version 1.2.0**.- 
+    - Migrated to @mean-expert scope for fireloop usage.
 - **Version 1.1.9**.- 
     - Fixed headers already set issue in wrapper
 - **Version 1.1.8**.- 

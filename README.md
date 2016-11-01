@@ -1,8 +1,6 @@
-[![NPM](https://nodei.co/npm/loopback-stats-mixin.png?stars&downloads)](https://nodei.co/npm/loopback-stats-mixin/) [![NPM](https://nodei.co/npm-dl/loopback-stats-mixin.png)](https://nodei.co/npm/loopback-stats-mixin/)
-
 Loopback Stats Mixin
 =============
-This module is designed for the [Strongloop Loopback](https://github.com/strongloop/loopback) framework.  It provides statistical functionallity to any Model, Relation or Nested Dataset.
+This module is designed for the [NodeJS](http://nodejs.org) [Loopback](https://github.com/strongloop/loopback) and [FireLoop](http://fireloop.io) frameworks.  It provides statistical functionallity to any Model, Relation or Nested Dataset.
 
 The **loopback-stats-mixin** module provides the following mixins and functionallity.
 
@@ -160,4 +158,4 @@ The following options are needed in order to create a bundled-service to provide
 
 LICENSE
 =============
-[MTI](LICENSE.md)
+[MIT](LICENSE.md)
