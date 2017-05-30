@@ -4,6 +4,8 @@ Loopback Stats Mixin - CHANGELOG
 
 The **loopback-stats-mixin** module change .
 
+- **Version 1.2.1**.- 
+    - Removed then to avoid duplicated callbacks.
 - **Version 1.2.0**.- 
     - Migrated to @mean-expert scope for fireloop usage.
 - **Version 1.1.9**.- 

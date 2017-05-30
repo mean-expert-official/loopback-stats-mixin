@@ -32,7 +32,7 @@ export default (Model, ctx) => {
           next();
         };
         if (Model[item]) {
-          Model[item].apply(Model, Array.from(ctx.args)).then(next);
+          Model[item].apply(Model, Array.from(ctx.args));
         } else {
           next(new Error(Model.definition.name + '.' + item + ' does not exist, verify your configuration.'));
         }
