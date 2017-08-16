@@ -3,7 +3,6 @@
  * Query Builder Dependencies
  */
 import moment from 'moment';
-import TypeBuilder from './type-builder';
 /**
  * Builds Loopback Query
  */
@@ -31,8 +30,7 @@ export default class QueryBuilder {
         // Set Range
         if (this.ctx.params.range && this.ctx.count.on) {
             query.where[this.ctx.count.on] = {};
-            let range = new TypeBuilder(this.ctx).build();
-            switch (range) {
+            switch (this.ctx.params.range) {
                 case 'hourly':
                     query.where[this.ctx.count.on].gt = moment(this.ctx.nowISOString).subtract(24, 'hours').toDate();
                     break;
@@ -47,6 +45,10 @@ export default class QueryBuilder {
                     break;
                 case 'yearly':
                     query.where[this.ctx.count.on].gt = moment(this.ctx.nowISOString).subtract(5, 'years').toDate();
+                    break;
+                case 'custom':
+                    query.where[this.ctx.count.on].gte = this.ctx.params.custom.start;
+                    query.where[this.ctx.count.on].lte = this.ctx.params.custom.end;
                     break;
             }
         }
