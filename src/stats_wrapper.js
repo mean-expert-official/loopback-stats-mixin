@@ -24,29 +24,21 @@ export default (Model, ctx) => {
     ctx.args = arguments;
     ctx.next = ctx.args[arguments.length - 1];
     // Create Promise
-    return new Promise((resolve, reject) => {
-      async.each(ctx.wraps, (item, next) => {
-        ctx.args[ctx.args.length - 1] = (err, dataset) => {
-          if (err) return next(err);
-          ctx.result[item] = dataset;
-          next();
-        };
-        if (Model[item]) {
-          Model[item].apply(Model, Array.from(ctx.args));
-        } else {
-          next(new Error(Model.definition.name + '.' + item + ' does not exist, verify your configuration.'));
-        }
-      }, err => {
-        if (typeof ctx.next === 'function') {
-          ctx.next(err, ctx.result);
-        } else {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(ctx.result);
-          }
-        }
-      });
+    async.each(ctx.wraps, (item, next) => {
+      ctx.args[ctx.args.length - 1] = (err, dataset) => {
+        if (err) return next(err);
+        ctx.result[item] = dataset;
+        next();
+      };
+      if (Model[item]) {
+        Model[item].apply(Model, Array.from(ctx.args));
+      } else {
+        next(new Error(Model.definition.name + '.' + item + ' does not exist, verify your configuration.'));
+      }
+    }, err => {
+      if (typeof ctx.next === 'function') {
+        ctx.next(err, ctx.result);
+      }
     });
   };
   /**
