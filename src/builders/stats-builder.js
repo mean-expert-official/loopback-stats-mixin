@@ -9,7 +9,7 @@ import TypeBuilder from './type-builder';
 export default class StatsBuilder {
 
     constructor(ctx) { this.ctx = ctx; }
-    
+
     process(list) {
       this.list = list;
       if (this.ctx.params.groupBy && this.ctx.params.groupBy.length > 0) {
@@ -40,7 +40,7 @@ export default class StatsBuilder {
         let count = 0;
         this.list.forEach(item => {
             if (group && item[this.ctx.params.groupBy] !== group) return;
-            let itemDate = moment(item[this.ctx.count.on]);
+            let itemDate = moment.utc(item[this.ctx.count.on]);
             let itemFactor = this.getFactor(item);
             switch (this.ctx.params.range) {
                 case 'hourly':
@@ -92,19 +92,19 @@ export default class StatsBuilder {
         let current;
         switch (this.ctx.params.range) {
             case 'hourly':
-                current = moment(this.ctx.nowISOString).subtract(index, 'hours');
+                current = moment.utc(this.ctx.nowISOString).subtract(index, 'hours');
                 break;
             case 'daily':
-                current = moment(this.ctx.nowISOString).subtract(index, 'days');
+                current = moment.utc(this.ctx.nowISOString).subtract(index, 'days');
                 break;
             case 'weekly':
-                current = moment(this.ctx.nowISOString).subtract(index, 'weeks');
+                current = moment.utc(this.ctx.nowISOString).subtract(index, 'weeks');
                 break;
             case 'monthly':
-                current = moment(this.ctx.nowISOString).subtract(index, 'months');
+                current = moment.utc(this.ctx.nowISOString).subtract(index, 'months');
                 break;
             case 'yearly':
-                current = moment(this.ctx.nowISOString).subtract(index, 'years');
+                current = moment.utc(this.ctx.nowISOString).subtract(index, 'years');
                 break;
         }
         return current;
@@ -129,8 +129,8 @@ export default class StatsBuilder {
                 iterator = 5; // 5 years
                 break;
             case 'custom':
-                let start = moment(this.ctx.params.custom.start);
-                let end = moment(this.ctx.params.custom.end);
+                let start = moment.utc(this.ctx.params.custom.start);
+                let end = moment.utc(this.ctx.params.custom.end);
                 iterator = 0;
                 ['hour', 'day', 'week', 'month','year'].forEach(item => {
                     let plural = [item, 's'].join('');
