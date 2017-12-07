@@ -12,8 +12,8 @@ export default class NowBuilder {
   build() {
     let type = this.ctx.params.range;
     if (this.ctx.params.range === 'custom') {
-      let start = moment(this.ctx.params.custom.start);
-      let end = moment(this.ctx.params.custom.end);
+      let start = moment.utc(this.ctx.params.custom.start);
+      let end = moment.utc(this.ctx.params.custom.end);
       ['hour', 'day', 'week', 'month', 'year'].forEach(item => {
         let plural = [item, 's'].join('');
         let diff = end.diff(start, plural);

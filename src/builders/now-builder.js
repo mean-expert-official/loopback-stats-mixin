@@ -18,10 +18,10 @@ export default class NowBuilder {
             case 'monthly':
             case 'yearly':
             default:
-                now = moment();
+                now = moment.utc();
             break;
             case 'custom':
-                now = moment(this.ctx.params.custom.end);
+                now = moment.utc(this.ctx.params.custom.end);
             break;
         }
         return now;

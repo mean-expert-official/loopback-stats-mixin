@@ -32,19 +32,19 @@ export default class QueryBuilder {
             query.where[this.ctx.count.on] = {};
             switch (this.ctx.params.range) {
                 case 'hourly':
-                    query.where[this.ctx.count.on].gt = moment(this.ctx.nowISOString).subtract(24, 'hours').toDate();
+                    query.where[this.ctx.count.on].gt = moment.utc(this.ctx.nowISOString).subtract(24, 'hours').toDate();
                     break;
                 case 'daily':
-                    query.where[this.ctx.count.on].gt = moment(this.ctx.nowISOString).subtract(7, 'days').toDate();
+                    query.where[this.ctx.count.on].gt = moment.utc(this.ctx.nowISOString).subtract(7, 'days').toDate();
                     break;
                 case 'weekly':
-                    query.where[this.ctx.count.on].gt = moment(this.ctx.nowISOString).subtract(4, 'weeks').toDate();
+                    query.where[this.ctx.count.on].gt = moment.utc(this.ctx.nowISOString).subtract(4, 'weeks').toDate();
                     break;
                 case 'monthly':
-                    query.where[this.ctx.count.on].gt = moment(this.ctx.nowISOString).subtract(12, 'months').toDate();
+                    query.where[this.ctx.count.on].gt = moment.utc(this.ctx.nowISOString).subtract(12, 'months').toDate();
                     break;
                 case 'yearly':
-                    query.where[this.ctx.count.on].gt = moment(this.ctx.nowISOString).subtract(5, 'years').toDate();
+                    query.where[this.ctx.count.on].gt = moment.utc(this.ctx.nowISOString).subtract(5, 'years').toDate();
                     break;
                 case 'custom':
                     query.where[this.ctx.count.on].gte = this.ctx.params.custom.start;
