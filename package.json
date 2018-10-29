@@ -26,7 +26,7 @@
   "dependencies": {
     "babel-runtime": "6.3.13",
     "async": "2.0.0-rc.2",
-    "moment": "2.12.0",
+    "moment": "^2.19.3",
     "util": "0.10.3"
   },
   "devDependencies": {
